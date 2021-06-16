@@ -46,9 +46,9 @@ def loadFile(file_name):
     data = pd.read_csv(file_name, sep=";")
     df = pd.DataFrame(data)
 
-    # histogram(df['age'])
+    histogram(df['age'])
     # normalizedHistogram(df['age'])
-    standardizedHistogram(df)
+    # standardizedHistogram(df)
 
     # plt.show()
 
@@ -56,6 +56,8 @@ def loadFile(file_name):
 def main():
     if len(sys.argv) == 2:
         loadFile(sys.argv[1])
+
+    plt.show()
 
 
 if __name__ == "__main__":

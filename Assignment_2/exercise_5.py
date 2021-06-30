@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 from scipy.io import arff
 import seaborn as sns
 import plotly.express as px
-import sys
 
 
 def main():

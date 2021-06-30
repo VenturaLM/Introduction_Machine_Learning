@@ -7,10 +7,10 @@ import sys
 
 
 def main():
-    data = arff.loadarff(".\iris\iris")
+    data = arff.loadarff(".\iris\iris.arff")
     df = pd.DataFrame(data[0])
 
-    sns.pairplot(data=df, hue='species')
+    sns.pairplot(data=df, hue='class')
     plt.show()
 
     pd.plotting.scatter_matrix(df)

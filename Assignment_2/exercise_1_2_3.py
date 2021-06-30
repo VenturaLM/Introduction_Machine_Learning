@@ -26,7 +26,7 @@ def loadFile(file_name):
 def normalizeData(file_name, df):
     # Normalizes dataset.
     df = (df - df.min()) / (df.max() - df.min())
-    printNormalizeData(file_name, df)
+    printNormalizedData(file_name, df)
 
 
 def printNormalizedData(file_name, df):

@@ -37,7 +37,7 @@ def printNormalizedData(file_name, df):
 
 
 def standardizeData(file_name, df):
-    # Normalizes dataset.
+    # Standardizes dataset.
     df = (df - df.mean()) / df.std()
     printStandardizedData(file_name, df)
 

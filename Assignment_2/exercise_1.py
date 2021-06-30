@@ -2,7 +2,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
-from sklearn.preprocessing import StandardScaler
+from scipy.io import arff
+# from sklearn.preprocessing import StandardScaler
 
 # References:
 #   https://www.python-course.eu/dealing_with_NaN_in_python.php
@@ -17,47 +18,68 @@ from sklearn.preprocessing import StandardScaler
 plt.style.use("fivethirtyeight")
 
 
-def histogram(data):
-    # Computes histogram from an array.
-    plt.subplot(211)
-    plt.hist(data, edgecolor="black")
-    plt.title("Histogram", fontsize=10)
-
-
-def normalizedHistogram(data):
-    # Computes normalized histogram from an array.
-    plt.subplot(212)
-    plt.hist(data, density=True, edgecolor="black")
-    plt.title("Normalized histogram", fontsize=10)
-
-
-def standardizedHistogram(data):
-    # TODO
-    # Computes standardized histogram from an array.
-    # Note: https://machinelearningmastery.com/normalize-standardize-time-series-data-python/
-    #       https://towardsdatascience.com/pca-using-python-scikit-learn-e653f8989e60
-    x = data.loc[:, data].values
-    y = data.loc[:, ['target']].values
-
-    x = StandardScaler().fit_transform(x)
-
-
 def loadFile(file_name):
-    data = pd.read_csv(file_name, sep=";")
-    df = pd.DataFrame(data)
+    # Loads the data using dataframes.
+    data = arff.loadarff(file_name)
+    df = pd.DataFrame(data[0])
 
-    histogram(df['age'])
-    # normalizedHistogram(df['age'])
-    # standardizedHistogram(df)
+    return df
 
-    # plt.show()
+
+def normalizeData(file_name, df):
+    # Normalizes dataset.
+    df = (df - df.min()) / (df.max() - df.min())
+    printNormalizeData(file_name, df)
+
+
+def printNormalizedData(file_name, df):
+    # Prints normalization data.
+    print("\n", file_name, " [0, 1]:\n\n", df)
+    df.hist()
+    plt.show()
+
+
+def standardizeData(file_name, df):
+    # Normalizes dataset.
+    df = (df - df.mean()) / df.std()
+    printStandardizedData(file_name, df)
+
+
+def printStandardizedData(file_name, df):
+    # Prints normalization data.
+    print("\n\n", file_name,
+          "[μ = 0, σ = 1] statistics:\n\n", df.describe(), "\n")
+    df.hist()
+    plt.show()
 
 
 def main():
-    if len(sys.argv) == 2:
-        loadFile(sys.argv[1])
+    if len(sys.argv) >= 2:
+        for i in range(1, len(sys.argv)):
+            file_name = sys.argv[i]
+            df = loadFile(file_name)
 
-    plt.show()
+            # Computes dataframe histogram.
+            df.hist(alpha=0.7)
+            plt.show()
+
+            if file_name == ".\weather\weather.arff":
+                df = df[['temperature', 'humidity']]
+
+            if file_name == ".\iris\iris.arff":
+                df = df[['sepallength', 'sepalwidth',
+                         'petallength', 'petalwidth']]
+
+            if file_name == ".\glass\glass.arff":
+                df = df[['RI', 'Na', 'Mg', 'Al', 'Si', "'K'", 'Ca', 'Ba', 'Fe']]
+
+            # Normalization.
+            normalizeData(file_name, df)
+
+            # Standardization.
+            standardizeData(file_name, df)
+    else:
+        print("Data was not selected!")
 
 
 if __name__ == "__main__":

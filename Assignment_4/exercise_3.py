@@ -26,6 +26,7 @@ def main():
     dendogram = sch.dendrogram(sch.linkage(df, method="ward"))
 
     df.plot.scatter(x=column_1, y=column_2)
+
     plt.show()
 
 

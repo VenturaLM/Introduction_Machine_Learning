@@ -10,7 +10,6 @@ import pandas as pd
 import scipy.cluster.hierarchy as sch
 
 from scipy.io import arff
-from sklearn.cluster import SpectralClustering
 
 
 def main():
@@ -21,11 +20,12 @@ def main():
     # ['RI', 'Na', 'Mg', 'Al', 'Si', "'K'", 'Ca', 'Ba', 'Fe']
     attributes = df.iloc[:, [0, 1, 2, 3, 4, 5, 6, 7, 8]].values
 
-    h_clustering = sch.linkage(attributes, method="ward")
+    # Method: single, complete, average.
+    h_clustering = sch.linkage(attributes, method="complete")
     dendogram = sch.dendrogram(h_clustering)
 
     # El parámetro t indica dónde corto en el dendograma, en el eje de la y.
-    clusters = sch.fcluster(h_clustering, t=15, criterion="distance")
+    clusters = sch.fcluster(h_clustering, t=5, criterion="distance")
     n_clusters = np.amax(np.unique(clusters))
 
     df["Hierarchical Clustering"] = clusters

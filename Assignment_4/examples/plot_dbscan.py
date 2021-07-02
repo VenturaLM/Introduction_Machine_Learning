@@ -9,14 +9,14 @@ Demo of DBSCAN clustering algorithm
 Finds core samples of high density and expands clusters from them.
 
 """
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
+from sklearn.datasets import make_blobs
+from sklearn import metrics
+from sklearn.cluster import DBSCAN
+import numpy as np
 print(__doc__)
 
-import numpy as np
-
-from sklearn.cluster import DBSCAN
-from sklearn import metrics
-from sklearn.datasets.samples_generator import make_blobs
-from sklearn.preprocessing import StandardScaler
 
 # Generate sample data
 centers = [[1, 1], [-1, -1], [1, -1]]
@@ -49,7 +49,6 @@ print("Silhouette Coefficient: %0.3f"
       % metrics.silhouette_score(X, labels))
 
 # Plot result
-import matplotlib.pyplot as plt
 
 # Black removed and is used for noise instead.
 unique_labels = set(labels)

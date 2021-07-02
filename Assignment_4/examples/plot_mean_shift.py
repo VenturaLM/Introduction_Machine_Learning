@@ -11,11 +11,13 @@ feature space analysis". IEEE Transactions on Pattern Analysis and
 Machine Intelligence. 2002. pp. 603-619.
 
 """
+from itertools import cycle
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_blobs
+from sklearn.cluster import MeanShift, estimate_bandwidth
+import numpy as np
 print(__doc__)
 
-import numpy as np
-from sklearn.cluster import MeanShift, estimate_bandwidth
-from sklearn.datasets.samples_generator import make_blobs
 
 # #############################################################################
 # Generate sample data
@@ -40,8 +42,6 @@ print("number of estimated clusters : %d" % n_clusters_)
 
 # #############################################################################
 # Plot result
-import matplotlib.pyplot as plt
-from itertools import cycle
 
 plt.figure(1)
 plt.clf()

@@ -1,16 +1,16 @@
 """
-    References: https://www.youtube.com/watch?v=v7oLMvcxgFY
+    References:
+        https://www.youtube.com/watch?v=v7oLMvcxgFY
+        https://www.youtube.com/watch?v=iT4xYghI7Rg
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import scipy.cluster.hierarchy as sch
-import random
-from sklearn import datasets
 
-from sklearn.cluster import AgglomerativeClustering
 from scipy.io import arff
+from sklearn.cluster import SpectralClustering
 
 
 def main():
@@ -18,14 +18,22 @@ def main():
     data = arff.loadarff(file_name)
     df = pd.DataFrame(data[0])
 
-    headers = df.columns
-    column_1 = headers[random.randint(0, len(headers))]
-    column_2 = headers[random.randint(0, len(headers))]
-    #['RI', 'Na', 'Mg', 'Al', 'Si', "'K'", 'Ca', 'Ba', 'Fe']
+    # ['RI', 'Na', 'Mg', 'Al', 'Si', "'K'", 'Ca', 'Ba', 'Fe']
+    attributes = df.iloc[:, [0, 1, 2, 3, 4, 5, 6, 7, 8]].values
 
-    dendogram = sch.dendrogram(sch.linkage(df, method="ward"))
+    h_clustering = sch.linkage(attributes, method="ward")
+    dendogram = sch.dendrogram(h_clustering)
 
-    df.plot.scatter(x=column_1, y=column_2)
+    # El parámetro t indica dónde corto en el dendograma, en el eje de la y.
+    clusters = sch.fcluster(h_clustering, t=15, criterion="distance")
+    n_clusters = np.amax(np.unique(clusters))
+
+    df["Hierarchical Clustering"] = clusters
+    # print(df)
+
+    # Introducir en el eje x e y alguna de las columnas para ver el nivel de relación entre las dos variables.
+    df.plot.scatter(x="RI", y="Si", c=clusters,
+                    cmap="Greens", edgecolor="black")
 
     plt.show()
 
